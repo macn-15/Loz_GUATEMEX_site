@@ -9,9 +9,13 @@ function VideoSection({ content }) {
         <SectionTitle eyebrow={content.eyebrow} title={content.title} subtitle={content.subtitle} />
 
         <div className="video-wrapper">
-          <video controls preload="metadata" playsInline poster={logoPoster}>
-            <source src={displayVideo} type="video/quicktime" />
-            Tu navegador no soporta este formato de video.
+          <video src={displayVideo} controls preload="metadata" playsInline poster={logoPoster}>
+            <source src={displayVideo} type="video/mp4" />
+            Tu navegador no soporta este formato de video. Puedes verlo en{' '}
+            <a href={content.channelUrl} target="_blank" rel="noreferrer">
+              nuestro canal de YouTube
+            </a>
+            .
           </video>
         </div>
 
