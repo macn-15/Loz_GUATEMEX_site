@@ -183,6 +183,7 @@ iframe {
   gap: 1rem;
   padding: 0.8rem 0;
   flex-wrap: wrap;
+  position: relative;
 }
 
 /* Grouped selector sets heading font family across multiple elements. */
@@ -216,6 +217,23 @@ h3 {
   margin: 0;
   gap: 1rem;
   flex-wrap: wrap;
+}
+
+.menu-toggle {
+  display: none;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.45rem 0.65rem;
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  background: var(--surface-1);
 }
 
 .nav a {
@@ -408,6 +426,7 @@ h3 {
 .youtube-channel-link:focus-visible,
 .facebook-channel-link:focus-visible,
 .theme-toggle:focus-visible,
+.menu-toggle:focus-visible,
 .contact-form input:focus-visible,
 .contact-form textarea:focus-visible {
   outline: 3px solid var(--color-focus);
@@ -661,6 +680,48 @@ h3 {
   .contact-layout {
     grid-template-columns: 1.1fr 1fr;
     align-items: start;
+  }
+}
+
+@media (max-width: 759px) {
+  .nav {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    row-gap: 0.7rem;
+  }
+
+  .brand {
+    justify-self: start;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    justify-self: end;
+    align-items: center;
+  }
+
+  .toggle-controls {
+    justify-self: start;
+  }
+
+  .nav-links {
+    display: none;
+    grid-column: 1 / -1;
+    width: 100%;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .nav-links.is-open {
+    display: flex;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.4rem 0;
   }
 }
 

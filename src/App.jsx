@@ -13,13 +13,15 @@ const content = {
     ariaLabel: 'Navegacion principal',
     themeToggleLabel: 'Cambiar tema',
     themeDark: 'Oscuro',
-    themeLight: 'Claro'
+    themeLight: 'Claro',
+    mobileMenuOpen: 'Abrir menu',
+    mobileMenuClose: 'Cerrar menu'
   },
   navItems: [
     { href: '#home', label: 'Inicio' },
     { href: '#about', label: 'Nosotros' },
     { href: '#video', label: 'Video' },
-    { href: '#members', label: 'Integrantes' },
+    // { href: '#members', label: 'Integrantes' },
     { href: '#contact', label: 'Contacto' }
   ],
   hero: {
@@ -151,7 +153,7 @@ function App() {
       <main id="main-content">
         <Hero content={content.hero} about={content.about} />
         <VideoSection content={content.video} />
-        <BandMembers content={content.members} />
+        {/* <BandMembers content={content.members} /> */}
         <Contact content={content.contact} />
       </main>
 
