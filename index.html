@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- `<!doctype html>` tells browser to use standards mode for modern HTML parsing. -->
+<html lang="en">
+  <!-- `<html>` wraps entire document; `lang="en"` sets default language metadata.
+       App.jsx may update this at runtime to `es` or `en` for accessibility/SEO correctness. -->
+  <head>
+    <!-- Character encoding declaration:
+         UTF-8 supports accents and broad character sets. -->
+    <meta charset="UTF-8" />
+
+    <!-- Viewport meta is required for proper responsive scaling on mobile devices. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Browser tab title and baseline SEO metadata. -->
+    <title>Los Guatemex | Regional Mexican Band</title>
+    <meta
+      name="description"
+      content="Los Guatemex is a regional Mexican band blending tradition and modern performance energy. Watch featured videos, connect on social media, and book the band."
+    />
+
+    <!-- Open Graph metadata controls social preview cards when links are shared. -->
+    <meta property="og:title" content="Los Guatemex | Regional Mexican Band" />
+    <meta
+      property="og:description"
+      content="Official Los Guatemex site: band story, featured video, social links, and contact info."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://losguatemex.com" />
+    <meta property="og:image" content="https://losguatemex.com/og-image.jpg" />
+
+    <!-- Performance optimization:
+         `preconnect` starts connection setup earlier for font domains. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- External stylesheet request for Google Fonts families used by styles.css. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- React mount point:
+         `main.jsx` finds this element by id and renders the app into it. -->
+    <div id="root"></div>
+
+    <!-- Module script entry:
+         `type="module"` enables ES module import syntax in browser. -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

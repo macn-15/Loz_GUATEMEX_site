@@ -1,0 +1,672 @@
+/* FILE PURPOSE:
+   This stylesheet defines the full visual system:
+   - global design tokens,
+   - light + dark theme values,
+   - layout and component styles,
+   - responsive breakpoints.
+
+   IMPORTANT BEGINNER RULE:
+   Most color changes should happen in variables (tokens) first,
+   not by hardcoding colors inside individual component blocks.
+*/
+
+/* `:root` targets the document root (<html>) and is a common place
+   to define CSS custom properties (variables). */
+:root {
+  /* Brand palette tokens (raw colors) constrained to red/white/green families. */
+  --color-red: #c8102e;
+  --color-green: #0f6b3d;
+  --color-white: #ffffff;
+
+  /* Focus-ring color used in keyboard focus outlines. */
+  --color-focus: #c8102e;
+
+  /* Shared layout constants. */
+  --max-width: 1100px;
+  --radius: 14px;
+  --shadow: 0 16px 42px rgba(15, 107, 61, 0.2);
+
+  /* Semantic theme tokens (light mode defaults). */
+  --bg-base: #f6fff8;
+  --bg-gradient-top: #ffffff;
+  --bg-gradient-mid: #eefaf1;
+  --bg-radial-warm: rgba(200, 16, 46, 0.14);
+  --bg-radial-gold: rgba(15, 107, 61, 0.16);
+  --text-primary: #0f3f2a;
+  --text-inverse: #ffffff;
+  --surface-1: #ffffff;
+  --surface-2: rgba(255, 255, 255, 0.84);
+  --surface-header: rgba(255, 255, 255, 0.9);
+  --surface-footer: #0f6b3d;
+  --border-soft: rgba(15, 107, 61, 0.18);
+  --border-strong: rgba(200, 16, 46, 0.4);
+  --link-hover: #c8102e;
+  --muted-accent: #0f6b3d;
+
+  /* Hero-specific visual tokens. */
+  --hero-text: #ffffff;
+  --hero-gradient-a: rgba(15, 107, 61, 0.93);
+  --hero-gradient-b: rgba(10, 88, 51, 0.92);
+  --hero-gradient-c: rgba(200, 16, 46, 0.85);
+  --hero-gradient-d: rgba(200, 16, 46, 0.65);
+
+  /* Button tokens. */
+  --button-primary-bg: #c8102e;
+  --button-primary-text: #ffffff;
+  --button-secondary-text: #ffffff;
+  --button-secondary-border: rgba(255, 255, 255, 0.88);
+
+  /* Control/portrait decorative tokens. */
+  --theme-icon-bg: rgba(15, 107, 61, 0.12);
+  --portrait-gradient-a: rgba(200, 16, 46, 0.95);
+  --portrait-gradient-b: rgba(15, 107, 61, 0.95);
+  --portrait-highlight: rgba(255, 255, 255, 0.32);
+}
+
+/* Theme override selector:
+   [data-theme='dark'] means "when an element has attribute data-theme='dark'".
+   App.jsx sets this attribute on <html>, so all descendants receive dark token values. */
+[data-theme='dark'] {
+  --shadow: 0 18px 38px rgba(15, 107, 61, 0.5);
+  --bg-base: #042014;
+  --bg-gradient-top: #05291a;
+  --bg-gradient-mid: #063220;
+  --bg-radial-warm: rgba(200, 16, 46, 0.28);
+  --bg-radial-gold: rgba(15, 107, 61, 0.24);
+  --text-primary: #f3fff7;
+  --text-inverse: #0f3f2a;
+  --surface-1: #0a3f28;
+  --surface-2: rgba(255, 255, 255, 0.12);
+  --surface-header: rgba(7, 42, 27, 0.9);
+  --surface-footer: #032114;
+  --border-soft: rgba(255, 255, 255, 0.2);
+  --border-strong: rgba(200, 16, 46, 0.55);
+  --link-hover: #ff4f6b;
+  --muted-accent: #8cf0bb;
+  --hero-text: #ffffff;
+  --hero-gradient-a: rgba(8, 58, 35, 0.92);
+  --hero-gradient-b: rgba(6, 49, 30, 0.95);
+  --hero-gradient-c: rgba(200, 16, 46, 0.82);
+  --hero-gradient-d: rgba(200, 16, 46, 0.66);
+  --button-primary-bg: #c8102e;
+  --button-primary-text: #ffffff;
+  --button-secondary-text: #ffffff;
+  --button-secondary-border: rgba(255, 255, 255, 0.78);
+  --theme-icon-bg: rgba(255, 255, 255, 0.2);
+  --portrait-gradient-a: rgba(200, 16, 46, 0.95);
+  --portrait-gradient-b: rgba(15, 107, 61, 0.95);
+  --portrait-highlight: rgba(255, 255, 255, 0.3);
+}
+
+/* Universal selector `*` targets every element.
+   box-sizing: border-box means width includes padding+border, simplifying layout math. */
+* {
+  box-sizing: border-box;
+}
+
+/* Enables smooth animated scroll for anchor jumps (#ids). */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Body base styles: typography, text color, layered background, transitions. */
+body {
+  margin: 0;
+  font-family: 'Source Sans 3', sans-serif;
+  color: var(--text-primary);
+  background:
+    radial-gradient(circle at 15% 15%, var(--bg-radial-warm), transparent 30%),
+    radial-gradient(circle at 80% 10%, var(--bg-radial-gold), transparent 25%),
+    linear-gradient(180deg, var(--bg-gradient-top) 0%, var(--bg-gradient-mid) 35%, var(--bg-base) 100%);
+  line-height: 1.6;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Make links inherit surrounding text color by default. */
+a {
+  color: inherit;
+}
+
+/* Prevent media from overflowing parent width. */
+img,
+iframe {
+  max-width: 100%;
+}
+
+/* Shared centered wrapper.
+   width: min(92%, var(--max-width)) means use 92% width but never exceed max token. */
+.container {
+  width: min(92%, var(--max-width));
+  margin: 0 auto;
+}
+
+/* Accessibility skip link starts off-screen until focused. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+/* :focus pseudo-class applies when element receives focus. */
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: var(--surface-footer);
+  color: var(--hero-text);
+  padding: 0.6rem 0.9rem;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+/* Shared vertical spacing for each section block. */
+.section {
+  padding: 4.5rem 0;
+}
+
+/* Sticky top nav bar.
+   position: sticky + top:0 keeps header visible while scrolling. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(9px);
+  background-color: var(--surface-header);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* Header inner layout uses flexbox.
+   flex-wrap allows controls to wrap on narrow screens. */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  flex-wrap: wrap;
+}
+
+/* Grouped selector sets heading font family across multiple elements. */
+.brand,
+h1,
+h2,
+h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.brand {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand img {
+  width: auto;
+  height: clamp(34px, 5vw, 46px);
+  display: block;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow);
+}
+
+.nav ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  color: var(--link-hover);
+}
+
+.toggle-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--surface-1);
+}
+
+.theme-toggle span[aria-hidden='true'] {
+  display: inline-grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  background: var(--theme-icon-bg);
+}
+
+.theme-toggle-text {
+  line-height: 1;
+}
+
+.hero {
+  position: relative;
+  min-height: auto;
+  display: grid;
+  align-items: center;
+  padding: 1.4rem 0 0.6rem;
+}
+
+.hero-content {
+  background:
+    radial-gradient(circle at 85% 12%, rgba(255, 255, 255, 0.14), transparent 45%),
+    linear-gradient(145deg, rgba(10, 88, 51, 0.97), rgba(8, 72, 43, 0.96));
+  color: var(--hero-text);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(1.05rem, 2.3vw, 1.55rem);
+  text-align: left;
+  display: grid;
+  gap: clamp(0.75rem, 1.6vw, 1.15rem);
+  align-items: start;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.hero-layout {
+  grid-template-columns: 1fr;
+}
+
+.hero-heading {
+  display: grid;
+  gap: 0.2rem;
+  justify-items: center;
+  text-align: center;
+  padding-bottom: 0.15rem;
+}
+
+.hero-heading .eyebrow {
+  font-size: clamp(0.74rem, 1.35vw, 0.82rem);
+  letter-spacing: 0.1em;
+  opacity: 0.92;
+}
+
+.eyebrow,
+.section-eyebrow {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+
+.hero h1 {
+  font-size: clamp(1.65rem, 3.9vw, 2.35rem);
+  margin: 0;
+  line-height: 0.96;
+  letter-spacing: 0.02em;
+}
+
+.hero-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.7rem, 1.6vw, 1.05rem);
+  align-items: start;
+}
+
+.hero-media {
+  margin: 0;
+  border-radius: 0;
+  overflow: visible;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.hero-media img {
+  width: 100%;
+  height: clamp(190px, 34vw, 320px);
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+.hero-about-panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  color: var(--hero-text);
+  backdrop-filter: none;
+  align-self: start;
+}
+
+.hero-about-panel p {
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.94);
+  line-height: 1.72;
+  max-width: 52ch;
+}
+
+.hero-about-panel .section-eyebrow {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.hero-about-panel .section-header {
+  margin: 0;
+}
+
+.hero-about-panel .section-header h2 {
+  color: #ffffff;
+  font-size: clamp(1.8rem, 4.6vw, 2.45rem);
+  line-height: 0.98;
+}
+
+.hero-about-panel .section-subtitle {
+  margin-top: 0.4rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.58;
+}
+
+.btn {
+  border: 0;
+  border-radius: 999px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  padding: 0.7rem 1.25rem;
+  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* Focus-visible means focus ring usually appears for keyboard navigation,
+   avoiding noisy outlines on mouse clicks in many browsers. */
+.btn:focus-visible,
+.nav a:focus-visible,
+.youtube-channel-link:focus-visible,
+.facebook-channel-link:focus-visible,
+.theme-toggle:focus-visible,
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--button-secondary-text);
+  box-shadow: inset 0 0 0 1px var(--button-secondary-border);
+}
+
+.section-header {
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  font-size: clamp(2.1rem, 6vw, 3.2rem);
+  margin: 0.2rem 0;
+}
+
+.section-subtitle {
+  margin: 0;
+  max-width: 66ch;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.member-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.member-card h3 {
+  margin: 0.9rem 1rem 0;
+  font-size: 1.9rem;
+}
+
+.member-role {
+  margin: 0 1rem;
+  color: var(--muted-accent);
+  font-weight: 700;
+}
+
+.member-card p {
+  margin: 0.55rem 1rem 1rem;
+}
+
+.member-portrait {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  color: var(--hero-text);
+  background:
+    linear-gradient(155deg, var(--portrait-gradient-a), var(--portrait-gradient-b)),
+    radial-gradient(circle at 30% 20%, var(--portrait-highlight), transparent 45%);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.member-portrait-initials {
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.08em;
+  font-size: clamp(2.4rem, 9vw, 3.7rem);
+  line-height: 1;
+}
+
+.video-wrapper {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow);
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.video-links {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.youtube-channel-link,
+.facebook-channel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.youtube-channel-link:hover,
+.facebook-channel-link:hover {
+  transform: translateY(-1px);
+  border-color: var(--link-hover);
+}
+
+.youtube-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  display: inline-flex;
+}
+
+.youtube-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--button-primary-bg);
+}
+
+.facebook-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  display: inline-flex;
+}
+
+.facebook-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--text-primary);
+}
+
+.contact-layout {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contact-list li + li {
+  margin-top: 0.5rem;
+}
+
+.contact-form {
+  background: var(--surface-1);
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 0.6rem;
+  position: relative;
+}
+
+.contact-form label {
+  font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0.65rem 0.7rem;
+  font: inherit;
+  color: var(--text-primary);
+  background: var(--surface-2);
+}
+
+.contact-form button:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.contact-feedback {
+  margin: 0.2rem 0 0;
+  font-weight: 600;
+}
+
+.contact-feedback.is-success {
+  color: var(--muted-accent);
+}
+
+.contact-feedback.is-error {
+  color: var(--button-primary-bg);
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.site-footer {
+  background: var(--surface-footer);
+  color: var(--hero-text);
+  padding: 1rem 0;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footer-content ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tablet breakpoint: min-width means rules apply at 760px and above. */
+@media (min-width: 760px) {
+  .hero-content {
+    gap: 0.85rem;
+  }
+
+  .hero-body {
+    grid-template-columns: 1.02fr 0.98fr;
+    align-items: start;
+  }
+
+  .members-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-layout {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Desktop breakpoint at 1024px and above. */
+@media (min-width: 1024px) {
+  .members-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
