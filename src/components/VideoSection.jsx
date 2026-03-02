@@ -1,5 +1,5 @@
 import SectionTitle from './SectionTitle.jsx';
-import displayVideo from '../assets/displayVideo.mov';
+import displayVideo from '../assets/displayVideo.mp4';
 import logoPoster from '../assets/logo.JPG';
 
 function VideoSection({ content }) {
