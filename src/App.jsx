@@ -112,12 +112,7 @@ const getInitialTheme = () => {
   }
 
   const savedTheme = window.localStorage.getItem('los-guatemex-theme');
-  const initialTheme =
-    savedTheme === 'light' || savedTheme === 'dark'
-      ? savedTheme
-      : window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light';
+  const initialTheme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'light';
 
   document.documentElement.setAttribute('data-theme', initialTheme);
   return initialTheme;

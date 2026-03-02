@@ -210,7 +210,7 @@ h3 {
   box-shadow: var(--shadow);
 }
 
-.nav ul {
+.nav-links {
   display: flex;
   list-style: none;
   padding: 0;
