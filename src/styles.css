@@ -284,6 +284,10 @@ h3 {
   line-height: 1;
 }
 
+.mobile-theme-item {
+  display: none;
+}
+
 .hero {
   position: relative;
   min-height: auto;
@@ -701,6 +705,10 @@ h3 {
     align-items: center;
   }
 
+  .desktop-theme-controls {
+    display: none;
+  }
+
   .toggle-controls {
     justify-self: start;
   }
@@ -722,6 +730,18 @@ h3 {
   .nav-links a {
     display: block;
     padding: 0.4rem 0;
+  }
+
+  .mobile-theme-item {
+    display: block;
+    padding-top: 0.35rem;
+    border-top: 1px solid var(--border-soft);
+    margin-top: 0.35rem;
+  }
+
+  .mobile-theme-item .theme-toggle {
+    width: 100%;
+    justify-content: center;
   }
 }
 

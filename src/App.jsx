@@ -94,7 +94,13 @@ const content = {
     sending: 'Enviando...',
     success: 'Gracias. Recibimos tu mensaje y te contactaremos pronto.',
     error: 'No se pudo enviar el mensaje. Intentalo de nuevo en unos minutos.',
-    validationError: 'Por favor completa nombre, correo valido y mensaje.'
+    validationError: 'Por favor completa nombre, correo valido y mensaje.',
+    suspiciousSubmitError: 'Espera unos segundos antes de enviar el formulario e intentalo de nuevo.',
+    providerError: 'El servicio de correo rechazo el envio temporalmente. Intentalo de nuevo en un momento.',
+    providerConfigError:
+      'Falta configurar el servicio de correo en el servidor. Revisa las variables de entorno.',
+    serverError: 'Ocurrio un error interno al procesar tu mensaje. Intentalo nuevamente.',
+    unknownErrorPrefix: 'No se pudo enviar el mensaje. Codigo'
   },
   footer: {
     rights: 'Todos los derechos reservados.',

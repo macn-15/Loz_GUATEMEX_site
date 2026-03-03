@@ -6,6 +6,24 @@ function Contact({ content }) {
   const [status, setStatus] = useState('idle');
   const [feedback, setFeedback] = useState('');
 
+  const getErrorMessage = (code) => {
+    switch (code) {
+      case 'invalid-fields':
+      case 'invalid-content-type':
+        return content.validationError;
+      case 'suspicious-submit':
+        return content.suspiciousSubmitError;
+      case 'missing-email-provider-config':
+        return content.providerConfigError;
+      case 'provider-error':
+        return content.providerError;
+      case 'server-error':
+        return content.serverError;
+      default:
+        return `${content.unknownErrorPrefix}: ${code || 'unknown'}.`;
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setFeedback('');
@@ -40,16 +58,25 @@ function Contact({ content }) {
       });
 
       if (!response.ok) {
-        throw new Error('failed-request');
+        let errorCode = 'request-failed';
+        try {
+          const errorPayload = await response.json();
+          errorCode = errorPayload?.message || errorCode;
+        } catch {
+          errorCode = 'invalid-error-response';
+        }
+
+        console.error('Contact form submit failed:', { status: response.status, errorCode });
+        throw new Error(errorCode);
       }
 
       setStatus('success');
       setFeedback(content.success);
       event.currentTarget.reset();
       startedAtRef.current = Date.now();
-    } catch {
+    } catch (error) {
       setStatus('error');
-      setFeedback(content.error);
+      setFeedback(getErrorMessage(error?.message));
     }
   };
 

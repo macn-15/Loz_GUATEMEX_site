@@ -68,9 +68,23 @@ function Navbar({ brand, nav, navItems, theme, onThemeToggle }) {
               </a>
             </li>
           ))}
+
+          <li className="mobile-theme-item">
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={onThemeToggle}
+              aria-label={nav.themeToggleLabel}
+              aria-pressed={theme === 'dark'}
+              title={nav.themeToggleLabel}
+            >
+              <span aria-hidden="true">{theme === 'dark' ? '☀︎' : '🌙'}</span>
+              <span className="theme-toggle-text">{theme === 'dark' ? nav.themeLight : nav.themeDark}</span>
+            </button>
+          </li>
         </ul>
 
-        <div className="toggle-controls">
+        <div className="toggle-controls desktop-theme-controls">
           <button
             type="button"
             className="theme-toggle"
