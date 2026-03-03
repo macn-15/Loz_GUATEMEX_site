@@ -28,7 +28,8 @@ function Contact({ content }) {
     event.preventDefault();
     setFeedback('');
 
-    const formData = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const formData = new FormData(formElement);
     const name = String(formData.get('name') || '').trim();
     const email = String(formData.get('email') || '').trim();
     const message = String(formData.get('message') || '').trim();
@@ -72,7 +73,7 @@ function Contact({ content }) {
 
       setStatus('success');
       setFeedback(content.success);
-      event.currentTarget.reset();
+      formElement.reset();
       startedAtRef.current = Date.now();
     } catch (error) {
       setStatus('error');
